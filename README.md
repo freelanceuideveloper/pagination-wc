@@ -447,73 +447,12 @@ pagination-wc::part(pagination-button) {
 }
 ```
 
-## 📂 Project Structure
-
-```
-pagination-component/
-├── README.md
-├── LICENSE
-├── package.json
-├── src/
-│   ├── pagination-component.js     # Main component source
-│   └── pagination-wc.js           # Compiled component
-├── examples/
-│   ├── index.html                 # Interactive examples
-│   ├── basic.html                 # Basic usage examples
-│   └── advanced.html              # Advanced examples
-├── tests/
-│   ├── unit.test.js              # Unit tests
-│   └── integration.test.js       # Integration tests
-└── docs/
-    ├── api.md                    # API documentation
-    └── examples.md               # Usage examples
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/pagination-wc.git
-   cd pagination-wc
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-4. **Run tests**
-   ```bash
-   npm test
-   ```
-
-### Pull Request Process
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👤 Author
 
 **Vega**
 - Email: iam@freelanceuideveloper.com
-- GitHub: [@your-github-username](https://github.com/your-username)
-- Website: [your-website.com](https://your-website.com)
+- Website: [freelanceuideveloper.com](https://freelanceuideveloper.com)
 
 ## 🙏 Acknowledgments
 
@@ -521,14 +460,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with love for the web development community
 - Thanks to all contributors and users
 
-## 📊 Stats
-
-![GitHub stars](https://img.shields.io/github/stars/your-username/pagination-wc?style=social)
-![GitHub forks](https://img.shields.io/github/forks/your-username/pagination-wc?style=social)
-![GitHub issues](https://img.shields.io/github/issues/your-username/pagination-wc)
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/pagination-wc)
-
----
 
 <div align="center">
     <p>Made with ❤️ for the web development community</p>
