@@ -2,8 +2,6 @@
 
 A flexible, accessible, and beautifully designed web component for seamless content navigation. Built with pure vanilla JavaScript and modern web standards.
 
-![Pagination Component Preview](https://via.placeholder.com/800x400/667eea/ffffff?text=Modern+Pagination+Component)
-
 ## ✨ Features
 
 - 🎯 **Zero Dependencies** - Pure vanilla JavaScript implementation
