@@ -1,6 +1,11 @@
 # 🚀 Modern Pagination Web Component
 
 A flexible, accessible, and beautifully designed web component for seamless content navigation. Built with pure vanilla JavaScript and modern web standards.
+<img width="1000" height="787" alt="image" src="https://github.com/user-attachments/assets/4c034208-787c-451d-8a33-23900af7c6ce" />
+
+<img width="1371" height="700" alt="image" src="https://github.com/user-attachments/assets/76aee395-a8ce-45b0-ac69-5e22cee4852c" />
+<img width="1290" height="232" alt="image" src="https://github.com/user-attachments/assets/1b0d93a0-2a90-492c-a44f-c56e7f7cf73e" />
+<img width="1269" height="507" alt="image" src="https://github.com/user-attachments/assets/32ddf756-0a2c-4959-a330-da79e582b377" />
 
 ## ✨ Features
 
