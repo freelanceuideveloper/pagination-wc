@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Modern Pagination Web Component - Interactive Examples</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+            crossorigin="anonymous"
+        >
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #beef00 0%, #7d912e 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --light-bg: #f8fafc;
+            --card-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            --card-shadow-hover: 0 15px 35px rgba(0,0,0,0.12);
+            --border-radius: 16px;
+            --border-radius-sm: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #e8f4f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .example-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2.5rem;
+            padding: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .example-section:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .example-header {
+            background: var(--dark-gradient);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .example-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .example-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .example-badge {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-content {
+            padding: 2rem;
+        }
+
+        .example-description {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .product-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .product-card .card-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-card .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .product-card .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-list-item {
+            background: white;
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-list-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .user-info h6 {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            color: #718096;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table thead th {
+            background: var(--dark-gradient);
+            color: white;
+            border: none;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.8rem;
+            padding: 1rem;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-color: #e2e8f0;
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .demo-controls {
+            background: #f8fafc;
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .demo-controls h6 {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-btn {
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 25px;
+            padding: 0.6rem 1.2rem;
+            color: white;
+            font-weight: 500;
+            margin-right: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(79, 172, 254, 0.4);
+        }
+
+        .status-info {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%);
+            border: 2px solid #4facfe;
+            border-radius: var(--border-radius-sm);
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .status-info::before {
+            content: '💡';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .status-info-text {
+            margin-left: 2rem;
+            font-weight: 500;
+        }
+
+        .nav-tabs {
+            border: none;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 25px;
+            margin-right: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: #64748b;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(245, 87, 108, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .example-content {
+                padding: 1.5rem;
+            }
+            
+            .floating-action {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content text-center">
+                    <h1 class="hero-title">Modern Pagination</h1>
+                    <p class="hero-subtitle">
+                        Powerful, flexible, and beautifully designed web components for seamless content navigation
+                    </p>
+                </div>
+            </div>
+        </section>
+        <div class="container pb-5">
+            <!-- Documentation Section -->
+            <div class="example-section fade-in">
+                <div class="example-header">
+                    <div class="example-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h2 class="example-title">Component Options & API Reference</h2>
+                    <span class="example-badge">Documentation</span>
+                </div>
+                <div class="example-content">
+                    <div class="example-description">
+                        <strong>Complete Configuration Guide:</strong>
+                        Learn how to customize and control the pagination component using HTML attributes, JavaScript methods, and event handlers.
+                    </div>
+                    <!-- Navigation Tabs for Documentation -->
+                    <ul class="nav nav-tabs" id="docTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link active"
+                                id="attributes-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#attributes"
+                                type="button"
+                                role="tab"
+                            >
+                                <i class="fas fa-cog me-2"></i>
+                                HTML Attributes
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="methods-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#methods"
+                                type="button"
+                                role="tab"
+                            >
+                                <i class="fas fa-code me-2"></i>
+                                JavaScript API
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="events-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#events"
+                                type="button"
+                                role="tab"
+                            >
+                                <i class="fas fa-bolt me-2"></i>
+                                Events
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="examples-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#code-examples"
+                                type="button"
+                                role="tab"
+                            >
+                                <i class="fas fa-file-code me-2"></i>
+                                Code Examples
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="docTabsContent">
+                        <!-- HTML Attributes Tab -->
+                        <div class="tab-pane fade show active" id="attributes" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="mb-4">
+                                        <i class="fas fa-tags me-2 text-primary"></i>HTML Attributes Configuration
+                                    </h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Attribute</th>
+                                                    <th>Type</th>
+                                                    <th>Default</th>
+                                                    <th>Description</th>
+                                                    <th>Example</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <code class="text-primary">items-per-page</code>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-info">Number</span>
+                                                    </td>
+                                                    <td>
+                                                        <code>3</code>
+                                                    </td>
+                                                    <td>Number of items to display per page. Must be a positive integer.</td>
+                                                    <td>
+                                                        <code>items-per-page="5"</code>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <code class="text-primary">prev-text</code>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-success">String</span>
+                                                    </td>
+                                                    <td>
+                                                        <code>"Prev"</code>
+                                                    </td>
+                                                    <td>Text or HTML content for the previous button.</td>
+                                                    <td>
+                                                        <code>prev-text="← Back"</code>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <code class="text-primary">next-text</code>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-success">String</span>
+                                                    </td>
+                                                    <td>
+                                                        <code>"Next"</code>
+                                                    </td>
+                                                    <td>Text or HTML content for the next button.</td>
+                                                    <td>
+                                                        <code>next-text="Forward →"</code>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <code class="text-primary">id</code>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-success">String</span>
+                                                    </td>
+                                                    <td>
+                                                        <code>auto</code>
+                                                    </td>
+                                                    <td>Unique identifier for programmatic access via JavaScript.</td>
+                                                    <td>
+                                                        <code>id="my-pagination"</code>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="alert alert-info mt-4">
+                                        <h6>
+                                            <i class="fas fa-lightbulb me-2"></i>Pro Tips
+                                        </h6>
+                                        <ul class="mb-0">
+                                            <li>You can use HTML in
+                                                <code>prev-text</code> and
+                                                <code>next-text</code> for icons:
+                                                <code>prev-text="&lt;i class='fas fa-arrow-left'&gt;&lt;/i&gt; Back"</code>
+                                            </li>
+                                            <li>The
+                                                <code>items-per-page</code> attribute can be changed dynamically and the component will automatically recalculate
+                                            </li>
+                                            <li>Always provide meaningful text for accessibility, even when using icons</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- JavaScript API Tab -->
+                        <div class="tab-pane fade" id="methods" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="mb-4">
+                                        <i class="fas fa-code me-2 text-success"></i>JavaScript Methods & Properties
+                                    </h4>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-4">
+                                            <h5 class="text-primary">Navigation Methods</h5>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <code>goToPage(pageNumber)</code>
+                                                    </h6>
+                                                    <p class="card-text">Navigate to a specific page number (1-based index).</p>
+                                                    <pre class="bg-light p-2 rounded">
+                                                        <code>
+                                                            const pagination = document.getElementById('my-pagination');
+pagination.goToPage(3); // Go to page 3
+                                                        </code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                            <div class="card mt-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <code>refresh()</code>
+                                                    </h6>
+                                                    <p class="card-text">Recalculate pagination after adding/removing items.</p>
+                                                    <pre class="bg-light p-2 rounded">
+                                                        <code>
+                                                            // After adding new content
+pagination.appendChild(newItem);
+pagination.refresh();
+                                                        </code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <h5 class="text-info">Getter Methods</h5>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <code>getCurrentPage()</code>
+                                                    </h6>
+                                                    <p class="card-text">Returns the current active page number.</p>
+                                                    <pre class="bg-light p-2 rounded">
+                                                        <code>
+                                                            const currentPage = pagination.getCurrentPage();
+console.log(`Current page: ${currentPage}`);
+                                                        </code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                            <div class="card mt-3">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">
+                                                        <code>getTotalPages()</code>
+                                                    </h6>
+                                                    <p class="card-text">Returns the total number of pages available.</p>
+                                                    <pre class="bg-light p-2 rounded">
+                                                        <code>
+                                                            const totalPages = pagination.getTotalPages();
+console.log(`Total pages: ${totalPages}`);
+                                                        </code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-warning mt-4">
+                                        <h6>
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Important Notes
+                                        </h6>
+                                        <ul class="mb-0">
+                                            <li>Always call
+                                                <code>refresh()</code> after dynamically modifying the slotted content
+                                            </li>
+                                            <li>Page numbers are 1-based, not 0-based (first page is page 1)</li>
+                                            <li>Methods will validate input and ignore invalid page numbers</li>
+                                            <li>All methods are safe to call at any time, even before the component is fully initialized</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Events Tab -->
+                        <div class="tab-pane fade" id="events" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="mb-4">
+                                        <i class="fas fa-bolt me-2 text-warning"></i>Custom Events
+                                    </h4>
+                                    <div class="card border-warning">
+                                        <div class="card-header bg-warning text-dark">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-broadcast-tower me-2"></i>
+                                                <code>pagechange</code> Event
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">Fired whenever the user navigates to a different page, either through UI interaction or programmatic navigation.</p>
+                                            <h6 class="text-primary mt-3">Event Detail Properties:</h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Property</th>
+                                                            <th>Type</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <code>currentPage</code>
+                                                            </td>
+                                                            <td>Number</td>
+                                                            <td>The new current page number (1-based)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <code>totalPages</code>
+                                                            </td>
+                                                            <td>Number</td>
+                                                            <td>Total number of pages available</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <code>itemsPerPage</code>
+                                                            </td>
+                                                            <td>Number</td>
+                                                            <td>Number of items displayed per page</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <code>startIndex</code>
+                                                            </td>
+                                                            <td>Number</td>
+                                                            <td>0-based index of the first item on current page</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <code>endIndex</code>
+                                                            </td>
+                                                            <td>Number</td>
+                                                            <td>0-based index of the last item on current page</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <h6 class="text-success mt-4">Event Listener Examples:</h6>
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    // Listen to a specific pagination component
+document.getElementById('my-pagination').addEventListener('pagechange', function(event) {
+    console.log('Page changed to:', event.detail.currentPage);
+    console.log('Items on this page:', event.detail.startIndex, 'to', event.detail.endIndex);
+    
+    // Update URL or analytics
+    updateURL(event.detail.currentPage);
+    trackPageView(event.detail);
+});
+
+// Listen to all pagination components on the page
+document.addEventListener('pagechange', function(event) {
+    console.log('Any pagination changed:', event.detail);
+    
+    // Update global state or perform common actions
+    updateGlobalState(event.detail);
+});
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-success mt-4">
+                                        <h6>
+                                            <i class="fas fa-check-circle me-2"></i>Event Best Practices
+                                        </h6>
+                                        <ul class="mb-0">
+                                            <li>Use
+                                                <code>pagechange</code> events to update URL fragments or query parameters
+                                            </li>
+                                            <li>Events bubble up, so you can listen at the document level for all pagination components</li>
+                                            <li>The event is fired after the UI has been updated with new content</li>
+                                            <li>Perfect for analytics tracking, lazy loading, or updating related components</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Code Examples Tab -->
+                        <div class="tab-pane fade" id="code-examples" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="mb-4">
+                                        <i class="fas fa-file-code me-2 text-danger"></i>Complete Code Examples
+                                    </h4>
+                                    <!-- Basic Usage -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-play me-2"></i>1. Basic Usage
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    &lt;!-- Basic pagination with default settings --&gt;
+&lt;pagination-wc&gt;
+    &lt;div slot="items"&gt;Item 1&lt;/div&gt;
+    &lt;div slot="items"&gt;Item 2&lt;/div&gt;
+    &lt;div slot="items"&gt;Item 3&lt;/div&gt;
+    &lt;div slot="items"&gt;Item 4&lt;/div&gt;
+    &lt;div slot="items"&gt;Item 5&lt;/div&gt;
+&lt;/pagination-wc&gt;
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <!-- Custom Configuration -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-cogs me-2"></i>2. Custom Configuration
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    &lt;!-- Customized pagination with icons and different page size --&gt;
+&lt;pagination-wc 
+    items-per-page="5" 
+    prev-text="&lt;i class='fas fa-chevron-left'&gt;&lt;/i&gt; Previous" 
+    next-text="Next &lt;i class='fas fa-chevron-right'&gt;&lt;/i&gt;"
+    id="my-custom-pagination"&gt;
+    
+    &lt;div slot="items" class="product-card"&gt;
+        &lt;h3&gt;Product 1&lt;/h3&gt;
+        &lt;p&gt;Product description...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- More items... --&gt;
+&lt;/pagination-wc&gt;
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <!-- Advanced JavaScript Control -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-code-branch me-2"></i>3. Advanced JavaScript Control
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    &lt;script&gt;
+// Wait for the component to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    const pagination = document.getElementById('my-pagination');
+    
+    // Control buttons
+    document.getElementById('first-page').addEventListener('click', () =&gt; {
+        pagination.goToPage(1);
+    });
+    
+    document.getElementById('last-page').addEventListener('click', () =&gt; {
+        pagination.goToPage(pagination.getTotalPages());
+    });
+    
+    // Add new items dynamically
+    document.getElementById('add-item').addEventListener('click', () =&gt; {
+        const newItem = document.createElement('div');
+        newItem.slot = 'items';
+        newItem.innerHTML = `&lt;h4&gt;New Item ${Date.now()}&lt;/h4&gt;`;
+        
+        pagination.appendChild(newItem);
+        pagination.refresh(); // Important: refresh after adding items
+    });
+    
+    // Listen for page changes
+    pagination.addEventListener('pagechange', (event) =&gt; {
+        console.log(`Navigated to page ${event.detail.currentPage}`);
+        
+        // Update URL without page reload
+        const url = new URL(window.location);
+        url.searchParams.set('page', event.detail.currentPage);
+        history.replaceState(null, '', url);
+        
+        // Load data for the new page (if using AJAX)
+        loadPageData(event.detail.currentPage);
+    });
+});
+
+// Function to load page data (example)
+function loadPageData(page) {
+    // Your AJAX logic here
+    fetch(`/api/data?page=${page}`)
+        .then(response =&gt; response.json())
+        .then(data =&gt; {
+            // Update the pagination items with new data
+            updatePaginationItems(data);
+        });
+}
+&lt;/script&gt;
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <!-- CSS Customization -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-palette me-2"></i>4. CSS Customization
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    &lt;style&gt;
+/* Custom pagination styles */
+pagination-wc {
+    --pagination-button-color: #007bff;
+    --pagination-button-hover: #0056b3;
+    --pagination-active-bg: #28a745;
+    --pagination-border-radius: 8px;
+}
+
+/* Override specific parts */
+pagination-wc::part(pagination-controls) {
+    justify-content: flex-start; /* Left align pagination */
+    margin-top: 2rem;
+}
+
+pagination-wc::part(pagination-button) {
+    border-radius: var(--pagination-border-radius);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+pagination-wc::part(pagination-button-active) {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    pagination-wc::part(pagination-controls) {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+&lt;/style&gt;
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <!-- Framework Integration -->
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                <i class="fas fa-layer-group me-2"></i>5. Framework Integration
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="text-primary">React Integration:</h6>
+                                            <pre class="bg-light p-3 rounded mb-3">
+                                                <code>
+                                                    import React, { useRef, useEffect } from 'react';
+
+function ProductList({ products }) {
+    const paginationRef = useRef();
+    
+    useEffect(() =&gt; {
+        const handlePageChange = (event) =&gt; {
+            console.log('Page changed:', event.detail.currentPage);
+        };
+        
+        const pagination = paginationRef.current;
+        pagination.addEventListener('pagechange', handlePageChange);
+        
+        return () =&gt; {
+            pagination.removeEventListener('pagechange', handlePageChange);
+        };
+    }, []);
+    
+    return (
+        &lt;pagination-wc ref={paginationRef} items-per-page="6"&gt;
+            {products.map(product =&gt; (
+                &lt;div key={product.id} slot="items"&gt;
+                    &lt;ProductCard product={product} /&gt;
+                &lt;/div&gt;
+            ))}
+        &lt;/pagination-wc&gt;
+    );
+}
+                                                </code>
+                                            </pre>
+                                            <h6 class="text-success">Vue.js Integration:</h6>
+                                            <pre class="bg-light p-3 rounded">
+                                                <code>
+                                                    &lt;template&gt;
+    &lt;pagination-wc 
+        :items-per-page="itemsPerPage"
+        :prev-text="prevText"
+        :next-text="nextText"
+        @pagechange="onPageChange"
+        ref="pagination"&gt;
+        
+        &lt;div 
+            v-for="item in items" 
+            :key="item.id" 
+            slot="items"&gt;
+            {{ item.content }}
+        &lt;/div&gt;
+    &lt;/pagination-wc&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+    data() {
+        return {
+            itemsPerPage: 5,
+            prevText: '← Back',
+            nextText: 'Next →',
+            items: []
+        };
+    },
+    methods: {
+        onPageChange(event) {
+            console.log('Vue page change:', event.detail);
+            this.$emit('page-changed', event.detail);
+        },
+        goToFirstPage() {
+            this.$refs.pagination.goToPage(1);
+        }
+    }
+};
+&lt;/script&gt;
+                                                </code>
+                                            </pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Example 1: Product Card Grid -->
+            <div class="example-section fade-in">
+                <div class="example-header">
+                    <div class="example-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h2 class="example-title">Product Card Grid</h2>
+                    <span class="example-badge">3 per page</span>
+                </div>
+                <div class="example-content">
+                    <div class="example-description">
+                        <strong>E-commerce Product Display:</strong>
+                        Perfect for showcasing products in a clean grid layout with responsive design and smooth pagination transitions.
+                    </div>
+                    <div class="row">
+                        <pagination-wc items-per-page="3" prev-text="← Previous" next-text="Next →">
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Premium Headphones</h5>
+                                        <p class="card-text">High-quality wireless headphones with noise cancellation and premium sound quality.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$199.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Smart Watch Pro</h5>
+                                        <p class="card-text">Advanced fitness tracking, heart rate monitoring, and smartphone integration.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$299.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Wireless Charger</h5>
+                                        <p class="card-text">Fast wireless charging pad compatible with all Qi-enabled devices.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$49.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Gaming Keyboard</h5>
+                                        <p class="card-text">Mechanical RGB backlit keyboard with customizable keys and macro support.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$149.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Bluetooth Speaker</h5>
+                                        <p class="card-text">Portable waterproof speaker with 360° surround sound and 24-hour battery.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$89.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">USB-C Hub</h5>
+                                        <p class="card-text">Multi-port hub with HDMI, USB 3.0, and power delivery for laptops.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$79.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Webcam 4K</h5>
+                                        <p class="card-text">Ultra HD webcam with auto-focus and built-in noise-canceling microphone.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$129.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Laptop Stand</h5>
+                                        <p class="card-text">Ergonomic aluminum laptop stand with adjustable height and cooling design.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$59.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Power Bank</h5>
+                                        <p class="card-text">20,000mAh portable charger with fast charging and multiple USB ports.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$39.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Monitor 27"</h5>
+                                        <p class="card-text">4K Ultra HD monitor with HDR support and USB-C connectivity.</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary fw-bold fs-5">$399.99</span>
+                                            <button class="btn btn-primary">
+                                                <i class="fas fa-cart-plus me-1"></i>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </pagination-wc>
+                    </div>
+                </div>
+                <!-- Example 2: User List -->
+                <div class="example-section fade-in">
+                    <div class="example-header">
+                        <div class="example-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 class="example-title">Team Directory</h2>
+                        <span class="example-badge">5 per page</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-description">
+                            <strong>Team Management System:</strong>
+                            Elegant user directory with profile information, perfect for employee listings, team pages, and contact directories.
+                        </div>
+                        <pagination-wc items-per-page="5" prev-text="← Previous" next-text="Next →">
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">AE</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Albert Einstein</h6>
+                                    <p>Senior Frontend Developer • albert.einstein@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">MC</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Marie Curie</h6>
+                                    <p>UX/UI Designer • marie.curie@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">NT</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Neil deGrasse Tyson</h6>
+                                    <p>Backend Developer • neil.tyson@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">KJ</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Katherine Johnson</h6>
+                                    <p>Product Manager • katherine.johnson@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">CS</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Carl Sagan</h6>
+                                    <p>DevOps Engineer • carl.sagan@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">BM</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Barbara McClintock</h6>
+                                    <p>Marketing Specialist • barbara.mcclintock@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">RF</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Richard Feynman</h6>
+                                    <p>Data Scientist • richard.feynman@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);">SR</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Sally Ride</h6>
+                                    <p>QA Engineer • sally.ride@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">SH</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Stephen Hawking</h6>
+                                    <p>Full Stack Developer • stephen.hawking@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #96fbc4 0%, #f9f586 100%);">GH</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Grace Hopper</h6>
+                                    <p>System Administrator • grace.hopper@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">AT</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Alan Turing</h6>
+                                    <p>Mobile App Developer • alan.turing@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div slot="items" class="user-list-item">
+                                <div class="user-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">RF</div>
+                                <div class="user-info flex-grow-1">
+                                    <h6>Rosalind Franklin</h6>
+                                    <p>Security Analyst • rosalind.franklin@company.com</p>
+                                </div>
+                                <div class="user-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </pagination-wc>
+                    </div>
+                </div>
+                <!-- Example 3: Data Table -->
+                <div class="example-section fade-in">
+                    <div class="example-header">
+                        <div class="example-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <h2 class="example-title">Data Management Table</h2>
+                        <span class="example-badge">4 per page</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-description">
+                            <strong>Admin Dashboard Table:</strong>
+                            Professional data table with status indicators and action buttons, ideal for user management, order tracking, and administrative interfaces.
+                        </div>
+                        <pagination-wc
+                            items-per-page="4"
+                            prev-text="← Previous"
+                            next-text="Next →"
+                            id="table-pagination"
+                        >
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#001</td>
+                                            <td>Pollock Shan</td>
+                                            <td>john@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#002</td>
+                                            <td>Jane Smith</td>
+                                            <td>jane@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-warning text-dark">Pending</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#003</td>
+                                            <td>Mike Johnson</td>
+                                            <td>mike@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#004</td>
+                                            <td>Alice Brown</td>
+                                            <td>alice@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-danger text-white">Inactive</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#005</td>
+                                            <td>Carl Sagan</td>
+                                            <td>carl@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#006</td>
+                                            <td>Barbara McClintock</td>
+                                            <td>barbara@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-warning text-dark">Pending</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#007</td>
+                                            <td>Richard Feynman</td>
+                                            <td>richard@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#008</td>
+                                            <td>Sally Ride</td>
+                                            <td>sally@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#009</td>
+                                            <td>Stephen Hawking</td>
+                                            <td>stephen@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-danger text-white">Inactive</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div slot="items" class="table-container">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <i class="fas fa-hashtag me-2"></i>ID
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-user me-2"></i>Name
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-envelope me-2"></i>Email
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-circle me-2"></i>Status
+                                            </th>
+                                            <th>
+                                                <i class="fas fa-cogs me-2"></i>Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-primary">#010</td>
+                                            <td>Grace Hopper</td>
+                                            <td>grace@company.com</td>
+                                            <td>
+                                                <span class="status-badge bg-success text-white">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm me-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </pagination-wc>
+                    </div>
+                </div>
+                <!-- Example 4: Interactive Demo -->
+                <div class="example-section fade-in">
+                    <div class="example-header">
+                        <div class="example-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h2 class="example-title">Interactive API Demo</h2>
+                        <span class="example-badge">Dynamic</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-description">
+                            <strong>Live API Demonstration:</strong>
+                            Test all pagination methods with real-time controls. Perfect for understanding the component's programmatic interface and event handling.
+                        </div>
+                        <div class="demo-controls">
+                            <h6>
+                                <i class="fas fa-gamepad me-2"></i>Interactive Controls
+                            </h6>
+                            <button class="demo-btn" onclick="goToFirstPage()">
+                                <i class="fas fa-fast-backward me-1"></i>
+                                First Page
+                            </button>
+                            <button class="demo-btn" onclick="goToLastPage()">
+                                <i class="fas fa-fast-forward me-1"></i>
+                                Last Page
+                            </button>
+                            <button class="demo-btn" onclick="refreshPagination()">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                Refresh
+                            </button>
+                            <button class="demo-btn" onclick="addItems()">
+                                <i class="fas fa-plus me-1"></i>
+                                Add Item
+                            </button>
+                        </div>
+                        <pagination-wc
+                            id="demo-pagination"
+                            items-per-page="2"
+                            prev-text="← Back"
+                            next-text="Forward →"
+                        >
+                            <div slot="items" class="alert alert-primary border-0 shadow-sm">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-rocket fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">API Control Demo</h5>
+                                        <p class="mb-0">Experience real-time pagination control through our comprehensive JavaScript API.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="alert alert-success border-0 shadow-sm">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-code fa-2x text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">Programmatic Navigation</h5>
+                                        <p class="mb-0">Jump to any page, refresh content, or add items dynamically using simple method calls.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="alert alert-info border-0 shadow-sm">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-mouse-pointer fa-2x text-info"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">Interactive Controls</h5>
+                                        <p class="mb-0">Use the control buttons above or the pagination controls below to navigate through content.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="alert alert-warning border-0 shadow-sm">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-sync-alt fa-2x text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">Auto-Update Feature</h5>
+                                        <p class="mb-0">The component automatically recalculates pages when items are dynamically added or removed.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="alert alert-danger border-0 shadow-sm">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-magic fa-2x text-danger"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">Web Component Power</h5>
+                                        <p class="mb-0">Built with modern web standards for maximum flexibility and reusability across frameworks.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </pagination-wc>
+                        <div class="status-info" id="status-info">
+                            <div class="status-info-text">Current Page: 1 | Total Pages: 3 | Items per Page: 2</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Example 5: Custom Gallery -->
+                <div class="example-section fade-in">
+                    <div class="example-header">
+                        <div class="example-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h2 class="example-title">Media Gallery</h2>
+                        <span class="example-badge">6 per page</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="example-description">
+                            <strong>Creative Portfolio Gallery:</strong>
+                            Showcase your work with a beautiful grid layout and custom navigation text. Perfect for portfolios, image galleries, and media collections.
+                        </div>
+                        <pagination-wc items-per-page="6">
+                            <span slot="prev-text">
+                                <i class="fas fa-chevron-left me-2"></i>Previous Gallery
+                            </span>
+                            <span slot="next-text">Next Gallery
+                                <i class="fas fa-chevron-right ms-2"></i>
+                            </span>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span class="badge bg-dark">NEW</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Portfolio Project #1</h6>
+                                        <p class="card-text small text-muted">Web Design • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-paint-brush"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span class="badge bg-warning">FEATURED</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Creative Artwork #2</h6>
+                                        <p class="card-text small text-muted">Digital Art • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #4facfe, #00f2fe); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-code"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Development Project #3</h6>
+                                        <p class="card-text small text-muted">Web App • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #ffecd2, #fcb69f); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Mobile App UI #4</h6>
+                                        <p class="card-text small text-muted">UI/UX Design • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #a8edea, #fed6e3); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-video"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Motion Graphics #5</h6>
+                                        <p class="card-text small text-muted">Animation • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #ff9a9e, #fecfef); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-palette"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Brand Identity #6</h6>
+                                        <p class="card-text small text-muted">Branding • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #fa709a, #fee140); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-laptop-code"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Frontend Framework #7</h6>
+                                        <p class="card-text small text-muted">JavaScript • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #fdbb2d, #22c1c3); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Data Visualization #8</h6>
+                                        <p class="card-text small text-muted">Analytics • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-cube"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">3D Modeling #9</h6>
+                                        <p class="card-text small text-muted">3D Design • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #96fbc4, #f9f586); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Startup Project #10</h6>
+                                        <p class="card-text small text-muted">Product Launch • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Educational Platform #11</h6>
+                                        <p class="card-text small text-muted">E-Learning • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div slot="items" class="col-lg-4 col-md-6 mb-4">
+                                <div class="product-card h-100 overflow-hidden">
+                                    <div class="position-relative">
+                                        <div style="height: 200px; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">Social Impact #12</h6>
+                                        <p class="card-text small text-muted">Non-Profit • 2024</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </pagination-wc>
+                    </div>
+                </div>
+            </div>
+            <!-- Floating Action Button -->
+            <div class="floating-action" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+            <!-- Bootstrap JavaScript for tab functionality -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+            <script src="pagination-wc.js"></script>
+            <script>
+        // Demo functions for Example 4
+        function goToFirstPage() {
+            const pagination = document.getElementById('demo-pagination');
+            pagination.goToPage(1);
+        }
+
+        function goToLastPage() {
+            const pagination = document.getElementById('demo-pagination');
+            pagination.goToPage(pagination.getTotalPages());
+        }
+
+        function refreshPagination() {
+            const pagination = document.getElementById('demo-pagination');
+            pagination.refresh();
+        }
+
+        function addItems() {
+            const pagination = document.getElementById('demo-pagination');
+            const newItem = document.createElement('div');
+            newItem.slot = 'items';
+            newItem.className = 'alert alert-secondary';
+            newItem.innerHTML = `
+                <h5>New Item ${Date.now()}</h5>
+                <p>This item was added dynamically at ${new Date().toLocaleTimeString()}.</p>
+            `;
+            pagination.appendChild(newItem);
+            pagination.refresh();
+        }
+
+        // Listen for page change events on the demo pagination
+        document.getElementById('demo-pagination').addEventListener('pagechange', function(e) {
+            const statusInfo = document.getElementById('status-info');
+            statusInfo.querySelector('.status-info-text').textContent = 
+                `Current Page: ${e.detail.currentPage} | Total Pages: ${e.detail.totalPages} | Items per Page: ${e.detail.itemsPerPage}`;
+        });
+
+        // Example of listening to all pagination components
+        document.addEventListener('pagechange', function(e) {
+            console.log('Page changed:', e.detail);
+        });
+
+        // Add fade-in animation to sections when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.example-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+        </body>
+    </html>
